@@ -4,7 +4,7 @@
   "version": "${mod_version}",
   "name": "More Than One Touch",
   "description": "Multi-key combination system for Minecraft",
-  "authors": ["MTOT Team"],
+  "authors": ["ReggiRi"],
   "contact": {
     "sources": "https://github.com/ReggiRi/MTOT-MC"
   },
@@ -12,8 +12,10 @@
   "icon": "assets/mtot/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.mtot.fabric.MTOTFabricClient"]
+    "client": ["com.mtot.fabric.MTOTFabricClient"],
+    "modmenu": ["com.mtot.fabric.MTOTModMenuIntegration"]
   },
+  "mixins": ["mtot.mixins.json"],
   "depends": {
     "fabricloader": ">=0.15.0",
     "fabric-api": "*",

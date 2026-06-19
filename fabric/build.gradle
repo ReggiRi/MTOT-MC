@@ -8,6 +8,7 @@ base {
 
 repositories {
     maven { url 'https://maven.fabricmc.net/' }
+    maven { url 'https://api.modrinth.com/maven' }
 }
 
 dependencies {
@@ -17,12 +18,14 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    modCompileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
 }
 
 processResources {
-    inputs.property 'mod_version', version
+    inputs.property 'mod_version', mod_version
     filesMatching('fabric.mod.json') {
-        expand 'mod_version': version
+        expand 'mod_version': mod_version
     }
 }
 
