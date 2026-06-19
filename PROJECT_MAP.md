@@ -4,32 +4,92 @@
 
 ```
 MTOT/
-├── common/          # Общий код (95% логики)
-│   └── src/main/java/com/mtot/
-│       ├── api/     # Публичное API
-│       ├── core/    # Ядро (регистрация, отслеживание)
-│       ├── gui/     # Пользовательский интерфейс
-│       ├── config/  # Конфигурация (JSON)
-│       └── actions/ # Встроенные действия
-├── fabric/          # Fabric обёртка
-├── neoforge/        # NeoForge обёртка
-└── forge/           # Forge обёртка
+├── common/                          # Общий код (95% логики)
+│   ├── build.gradle                 # Java 21, JUnit 5, GSON
+│   └── src/
+│       ├── main/java/com/mtot/
+│       │   ├── api/                 # Публичное API
+│       │   │   ├── IMTOTAPI.java    # Интерфейс API
+│       │   │   ├── KeyCombination.java  # Неизменяемая комбинация клавиш
+│       │   │   ├── Modifier.java    # Enum: SHIFT, CONTROL, ALT
+│       │   │   └── MTOTAPI.java     # Статическая точка доступа
+│       │   ├── core/                # Ядро
+│       │   │   ├── BindingRegistry.java  # Реестр действий и привязок
+│       │   │   ├── KeyStateTracker.java  # Отслеживание нажатий
+│       │   │   └── MTOTManager.java     # Синглтон + tick()
+│       │   ├── config/              # Конфигурация
+│       │   │   └── MTOTConfig.java  # JSON (де)сериализация
+│       │   └── actions/             # Встроенные действия
+│       │       └── BuiltinActions.java  # Shift+Enter, Ctrl+L, Ctrl+R
+│       └── test/java/com/mtot/
+│           ├── api/                 # ModifierTest, KeyCombinationTest, MTOTAPITest
+│           ├── core/                # BindingRegistryTest, KeyStateTrackerTest, MTOTManagerTest
+│           ├── config/              # MTOTConfigTest
+│           └── actions/             # BuiltinActionsTest
+├── fabric/                          # Fabric обёртка
+│   ├── build.gradle                 # Fabric Loom
+│   └── src/main/
+│       ├── java/com/mtot/fabric/
+│       │   ├── MTOTFabricClient.java    # ClientModInitializer
+│       │   └── FabricKeyManager.java    # GLFW polling
+│       └── resources/fabric.mod.json
+├── neoforge/                        # NeoForge обёртка
+│   ├── build.gradle                 # NeoForge userdev
+│   └── src/main/
+│       ├── java/com/mtot/neoforge/
+│       │   ├── MTOTNeoForgeClient.java  # @Mod + EventBus
+│       │   └── NeoForgeKeyManager.java  # GLFW polling
+│       └── resources/META-INF/neoforge.mods.toml
+├── forge/                           # Forge обёртка (1.20.1 LTS)
+│   ├── build.gradle                 # ForgeGradle
+│   └── src/main/
+│       ├── java/com/mtot/forge/
+│       │   ├── MTOTForgeClient.java     # @Mod + EventBus
+│       │   └── ForgeKeyManager.java     # GLFW polling
+│       └── resources/META-INF/mods.toml
+├── build.gradle                     # Корневой билд
+├── settings.gradle                  # Multi-module (common только)
+├── gradle.properties                # Версии зависимостей
+├── gradlew / gradlew.bat           # Gradle wrapper 8.7
+├── PROJECT_MAP.md                   # Этот файл
+├── .directory.md                    # Документация корня
+├── .gitignore
+├── MTOT-doc.md                      # Техническая спецификация
+└── 2R-skill-2.0.md                  # Стандарт разработки
 ```
+
+## Статистика
+
+- **Всего классов:** 12 (production) + 8 (test)
+- **Всего тестов:** 40, все зелёные
+- **Строк кода (common):** ~550 (production) + ~450 (test)
 
 ## Граф зависимостей
 
-- `common` — не зависит от платформ
-- `fabric` — зависит от `common`
-- `neoforge` — зависит от `common`
-- `forge` — зависит от `common`
+```
+IMTOTAPI ← MTOTAPI (статический доступ)
+    ↑
+MTOTManager (синглтон, implements IMTOTAPI)
+    ├── BindingRegistry  — действия + привязки
+    └── KeyStateTracker  — состояния клавиш + release detection
+            ↑
+MTOTConfig (сериализация BindingRegistry ↔ JSON)
+            ↑
+BuiltinActions (регистрирует 3 действия по умолчанию)
+
+Платформы → MTOTManager.tick()
+    ├── Fabric   → ClientTickEvents.END_CLIENT_TICK
+    ├── NeoForge → ClientTickEvent.Post
+    └── Forge    → ClientTickEvent.Post
+```
 
 ## Индекс изменений
 
-- Изменение `common/api/` → проверить `common/core/`, все платформы
-- Изменение `common/core/` → проверить `common/gui/`, `common/config/`, все платформы
-- Изменение `common/gui/` → проверить только GUI
-- Изменение `common/config/` → проверить `common/core/`
-- Изменение `common/actions/` → проверить `common/core/`
-- Изменение `fabric/` → проверить только Fabric
-- Изменение `neoforge/` → проверить только NeoForge
-- Изменение `forge/` → проверить только Forge
+- `common/api/` → проверить `common/core/`
+- `common/core/` → проверить `common/config/`, `actions/`, все платформы
+- `common/config/` → проверить `common/core/`
+- `common/actions/` → проверить `common/core/`
+- `fabric/` → проверить только Fabric
+- `neoforge/` → проверить только NeoForge
+- `forge/` → проверить только Forge
+- `build.gradle` / `settings.gradle` → проверить все модули
