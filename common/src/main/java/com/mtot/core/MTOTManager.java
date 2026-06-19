@@ -83,6 +83,15 @@ public class MTOTManager implements IMTOTAPI {
     }
 
     /**
+     * Возвращает реестр привязок.
+     *
+     * @return экземпляр {@link BindingRegistry}
+     */
+    public BindingRegistry getRegistry() {
+        return registry;
+    }
+
+    /**
      * Возвращает все текущие привязки.
      *
      * @return неизменяемая мапа id → комбинация
