@@ -60,4 +60,19 @@ class BindingRegistryTest {
         registry.resetToDefaults();
         assertEquals(combo, registry.getBinding("test:action").get());
     }
+
+    @Test
+    void shouldDetectConflictsExcludingSelf() {
+        registry.register("action:one", combo, () -> {});
+        registry.register("action:two", KeyCombination.of(66), () -> {});
+        assertTrue(registry.findConflicts("action:one", combo).isEmpty());
+    }
+
+    @Test
+    void shouldDetectConflictsBetweenActions() {
+        registry.register("action:one", combo, () -> {});
+        registry.register("action:two", KeyCombination.of(66), () -> {});
+        registry.bind("action:two", combo);
+        assertFalse(registry.findConflicts("action:two", combo).isEmpty());
+    }
 }

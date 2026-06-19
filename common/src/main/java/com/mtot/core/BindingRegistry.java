@@ -3,8 +3,10 @@ package com.mtot.core;
 import com.mtot.api.KeyCombination;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Реестр действий и их привязок к комбинациям клавиш.
@@ -133,6 +135,21 @@ public class BindingRegistry {
     public void resetToDefaults() {
         bindings.clear();
         bindings.putAll(fallbacks);
+    }
+
+    /**
+     * Находит конфликты для комбинации, исключая указанное действие.
+     *
+     * @param excludeId действие, которое не проверять
+     * @param combo     комбинация для поиска
+     * @return список ID действий, использующих эту комбинацию
+     */
+    public List<String> findConflicts(String excludeId, KeyCombination combo) {
+        return bindings.entrySet().stream()
+            .filter(e -> !e.getKey().equals(excludeId))
+            .filter(e -> e.getValue().equals(combo))
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
     }
 
     /**
