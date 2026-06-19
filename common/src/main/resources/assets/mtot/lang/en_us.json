@@ -1,0 +1,16 @@
+{
+  "mtot.screen.title": "More Than One Touch",
+  "mtot.screen.reset": "Reset to Defaults",
+  "mtot.screen.change": "Change",
+  "mtot.screen.cancel": "Cancel",
+  "mtot.screen.press_key": "Press a key...",
+  "mtot.screen.done": "Done",
+
+  "mtot.action.insert_newline": "Insert New Line",
+  "mtot.action.clear_chat": "Clear Chat",
+  "mtot.action.repeat_last": "Repeat Last Message",
+
+  "mtot.message.conflict": "Conflict! This combination is already in use.",
+  "mtot.message.saved": "Binding saved.",
+  "mtot.message.reset": "All bindings reset to defaults."
+}

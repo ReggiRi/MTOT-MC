@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -120,8 +121,10 @@ public class BindingEntryWidget extends AbstractWidget {
         int btnColor = hovered ? 0xFF4444EE : 0xFF3333CC;
         graphics.fill(btnLeft, y + 2, right - CHANGE_BTN_RIGHT,
             y + height - 2, btnColor);
-        graphics.drawString(font, capturing ? "Cancel" : "Change",
-            btnLeft + (CHANGE_BTN_WIDTH - font.width("Change")) / 2,
+        String btnLabel = I18n.get(capturing
+            ? "mtot.screen.cancel" : "mtot.screen.change");
+        graphics.drawString(font, btnLabel,
+            btnLeft + (CHANGE_BTN_WIDTH - font.width(btnLabel)) / 2,
             y + (height - 8) / 2, TEXT_COLOR);
     }
 

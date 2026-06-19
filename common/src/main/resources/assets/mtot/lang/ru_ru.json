@@ -1,0 +1,16 @@
+{
+  "mtot.screen.title": "More Than One Touch",
+  "mtot.screen.reset": "Сбросить настройки",
+  "mtot.screen.change": "Изменить",
+  "mtot.screen.cancel": "Отмена",
+  "mtot.screen.press_key": "Нажмите клавишу...",
+  "mtot.screen.done": "Готово",
+
+  "mtot.action.insert_newline": "Новая строка",
+  "mtot.action.clear_chat": "Очистить чат",
+  "mtot.action.repeat_last": "Повторить сообщение",
+
+  "mtot.message.conflict": "Конфликт! Эта комбинация уже используется.",
+  "mtot.message.saved": "Привязка сохранена.",
+  "mtot.message.reset": "Все привязки сброшены."
+}
