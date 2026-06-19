@@ -11,8 +11,8 @@ pluginManagement {
 rootProject.name = 'mtot'
 
 include 'common'
+include 'fabric'
 
 // Uncomment when full Minecraft dev environment is set up:
-// include 'fabric'
 // include 'neoforge'
 // include 'forge'
