@@ -27,9 +27,9 @@ public final class KeyCombination {
 
     private KeyCombination(int keyCode, Set<Modifier> modifiers) {
         this.keyCode = keyCode;
-        this.modifiers = Collections.unmodifiableSet(
-            EnumSet.copyOf(modifiers)
-        );
+        this.modifiers = modifiers.isEmpty()
+            ? Collections.emptySet()
+            : Collections.unmodifiableSet(EnumSet.copyOf(modifiers));
     }
 
     /**
