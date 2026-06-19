@@ -6,22 +6,28 @@
 MTOT/
 ├── common/                          # Общий код (95% логики)
 │   ├── build.gradle                 # Java 21, JUnit 5, GSON
-│   └── src/
-│       ├── main/java/com/mtot/
-│       │   ├── api/                 # Публичное API
-│       │   │   ├── IMTOTAPI.java    # Интерфейс API
-│       │   │   ├── KeyCombination.java  # Неизменяемая комбинация клавиш
-│       │   │   ├── Modifier.java    # Enum: SHIFT, CONTROL, ALT
-│       │   │   └── MTOTAPI.java     # Статическая точка доступа
-│       │   ├── core/                # Ядро
-│       │   │   ├── BindingRegistry.java  # Реестр действий и привязок
-│       │   │   ├── KeyStateTracker.java  # Отслеживание нажатий
-│       │   │   └── MTOTManager.java     # Синглтон + tick()
-│       │   ├── config/              # Конфигурация
-│       │   │   └── MTOTConfig.java  # JSON (де)сериализация
-│       │   └── actions/             # Встроенные действия
-│       │       └── BuiltinActions.java  # Shift+Enter, Ctrl+L, Ctrl+R
-│       └── test/java/com/mtot/
+│       └── src/
+│           ├── main/java/com/mtot/
+│           │   ├── api/                 # Публичное API
+│           │   │   ├── IMTOTAPI.java    # Интерфейс API
+│           │   │   ├── KeyCombination.java  # Неизменяемая комбинация клавиш
+│           │   │   ├── Modifier.java    # Enum: SHIFT, CONTROL, ALT
+│           │   │   └── MTOTAPI.java     # Статическая точка доступа
+│           │   ├── core/                # Ядро
+│           │   │   ├── BindingRegistry.java  # Реестр действий и привязок
+│           │   │   ├── KeyStateTracker.java  # Отслеживание нажатий
+│           │   │   └── MTOTManager.java     # Синглтон + tick()
+│           │   ├── config/              # Конфигурация
+│           │   │   └── MTOTConfig.java  # JSON (де)сериализация
+│           │   ├── gui/                 # GUI
+│           │   │   ├── MTOTControlsScreen.java  # Экран настроек
+│           │   │   └── BindingEntryWidget.java  # Виджет строки привязки
+│           │   └── actions/             # Встроенные действия
+│           │       └── BuiltinActions.java  # Shift+Enter, Ctrl+L, Ctrl+R
+│           ├── main/resources/assets/mtot/lang/
+│           │   ├── en_us.json           # Английская локализация
+│           │   └── ru_ru.json           # Русская локализация
+│           └── test/java/com/mtot/
 │           ├── api/                 # ModifierTest, KeyCombinationTest, MTOTAPITest
 │           ├── core/                # BindingRegistryTest, KeyStateTrackerTest, MTOTManagerTest
 │           ├── config/              # MTOTConfigTest
@@ -48,7 +54,7 @@ MTOT/
 │       │   └── ForgeKeyManager.java     # GLFW polling
 │       └── resources/META-INF/mods.toml
 ├── build.gradle                     # Корневой билд
-├── settings.gradle                  # Multi-module (common только)
+├── settings.gradle                  # Multi-module (common + fabric)
 ├── gradle.properties                # Версии зависимостей
 ├── gradlew / gradlew.bat           # Gradle wrapper 8.7
 ├── PROJECT_MAP.md                   # Этот файл
@@ -60,9 +66,9 @@ MTOT/
 
 ## Статистика
 
-- **Всего классов:** 12 (production) + 8 (test)
-- **Всего тестов:** 40, все зелёные
-- **Строк кода (common):** ~550 (production) + ~450 (test)
+- **Всего классов:** 14 (production) + 8 (test)
+- **Всего тестов:** 42, все зелёные
+- **Строк кода (common):** ~650 (production) + ~500 (test)
 
 ## Граф зависимостей
 
@@ -76,6 +82,13 @@ MTOTManager (синглтон, implements IMTOTAPI)
 MTOTConfig (сериализация BindingRegistry ↔ JSON)
             ↑
 BuiltinActions (регистрирует 3 действия по умолчанию)
+
+GUI
+    ├── MTOTControlsScreen  ← BindingEntryWidget
+    └── оба используют KeyCombination, Modifier, IMTOTAPI
+
+Локализация
+    └── assets/mtot/lang/{en_us,ru_ru}.json
 
 Платформы → MTOTManager.tick()
     ├── Fabric   → ClientTickEvents.END_CLIENT_TICK
