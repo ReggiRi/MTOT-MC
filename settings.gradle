@@ -1,8 +1,18 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.fabricmc.net/' }
+        maven { url 'https://maven.neoforged.net/releases/' }
+        maven { url 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = 'mtot'
 
 include 'common'
 
-// Uncomment when Minecraft dev environment is set up:
+// Uncomment when full Minecraft dev environment is set up:
 // include 'fabric'
 // include 'neoforge'
 // include 'forge'

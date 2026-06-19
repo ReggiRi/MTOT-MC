@@ -1,12 +1,27 @@
 plugins {
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'java-library'
+}
+
+loom {
+    runs {
+        client {}
+        server {}
+    }
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabricmc.net/' }
+    maven { url 'https://libraries.minecraft.net/' }
 }
 
 dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+
+    compileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
+
     implementation 'com.google.code.gson:gson:2.10.1'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
