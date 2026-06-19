@@ -119,6 +119,15 @@ public class BindingRegistry {
     }
 
     /**
+     * Возвращает неизменяемую копию fallback-привязок.
+     *
+     * @return мапа id → комбинация по умолчанию
+     */
+    public Map<String, KeyCombination> getAllFallbacks() {
+        return Collections.unmodifiableMap(fallbacks);
+    }
+
+    /**
      * Сбрасывает все привязки к значениям по умолчанию.
      */
     public void resetToDefaults() {
