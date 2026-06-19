@@ -1,6 +1,8 @@
 rootProject.name = 'mtot'
 
 include 'common'
-include 'fabric'
-include 'neoforge'
-include 'forge'
+
+// Uncomment when Minecraft dev environment is set up:
+// include 'fabric'
+// include 'neoforge'
+// include 'forge'

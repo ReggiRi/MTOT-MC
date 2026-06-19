@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "mtot",
+  "version": "${mod_version}",
+  "name": "More Than One Touch",
+  "description": "Multi-key combination system for Minecraft",
+  "authors": ["MTOT Team"],
+  "contact": {
+    "sources": "https://github.com/ReggiRi/MTOT-MC"
+  },
+  "license": "MIT",
+  "icon": "assets/mtot/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.mtot.fabric.MTOTFabricClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "fabric-api": "*",
+    "minecraft": ">=1.20.1"
+  }
+}
