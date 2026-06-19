@@ -3,7 +3,7 @@ package com.mtot.fabric;
 import static org.lwjgl.glfw.GLFW.*;
 
 import com.mtot.core.MTOTManager;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 /**
  * Управляет состоянием клавиш через GLFW на Fabric.
@@ -29,7 +29,7 @@ public class FabricKeyManager {
      * Опрашивает GLFW и обновляет состояния клавиш.
      */
     public void update() {
-        long window = MinecraftClient.getInstance().getWindow().getHandle();
+        long window = Minecraft.getInstance().getWindow().getWindow();
         for (var entry : manager.getAllBindings().entrySet()) {
             int keyCode = entry.getValue().getKeyCode();
             boolean pressed = glfwGetKey(window, keyCode) == GLFW_PRESS;
