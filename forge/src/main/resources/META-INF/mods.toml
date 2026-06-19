@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "mtot"
+version = "${mod_version}"
+displayName = "More Than One Touch"
+logoFile = "mtot.png"
+credits = "MTOT Team"
+authors = "MTOT Team"
+description = """
+Multi-key combination system for Minecraft.
+Adds support for Shift+Enter, Ctrl+L, Ctrl+R and custom bindings.
+"""
+
+[[dependencies.mtot]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.mtot]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "CLIENT"
