@@ -1,0 +1,6 @@
+rootProject.name = 'mtot'
+
+include 'common'
+include 'fabric'
+include 'neoforge'
+include 'forge'

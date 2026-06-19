@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'com.mtot'
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+    }
+}
