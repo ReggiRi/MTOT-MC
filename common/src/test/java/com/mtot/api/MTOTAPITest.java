@@ -2,6 +2,7 @@ package com.mtot.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,11 @@ class MTOTAPITest {
             @Override
             public Optional<KeyCombination> getBinding(String id) {
                 return Optional.empty();
+            }
+
+            @Override
+            public List<String> findConflicts(String excludeId, KeyCombination combo) {
+                return List.of();
             }
         };
         MTOTAPI.setInstance(mock);

@@ -1,5 +1,6 @@
 package com.mtot.api;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,4 +50,6 @@ public interface IMTOTAPI {
      * @return комбинация клавиш или {@code Optional.empty()} если не назначена
      */
     Optional<KeyCombination> getBinding(String id);
+
+    List<String> findConflicts(String excludeId, KeyCombination combo);
 }

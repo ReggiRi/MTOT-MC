@@ -3,6 +3,7 @@ package com.mtot.core;
 import com.mtot.api.IMTOTAPI;
 import com.mtot.api.KeyCombination;
 import com.mtot.api.MTOTAPI;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -80,6 +81,11 @@ public class MTOTManager implements IMTOTAPI {
     @Override
     public Optional<KeyCombination> getBinding(String id) {
         return registry.getBinding(id);
+    }
+
+    @Override
+    public List<String> findConflicts(String excludeId, KeyCombination combo) {
+        return registry.findConflicts(excludeId, combo);
     }
 
     /**

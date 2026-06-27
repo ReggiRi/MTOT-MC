@@ -6,6 +6,22 @@ base {
     archivesName = 'mtot-forge'
 }
 
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            mods {
+                mtot {
+                    source sourceSets.main
+                    source project(':common').sourceSets.main
+                }
+            }
+        }
+    }
+}
+
 repositories {
     maven { url 'https://maven.minecraftforge.net/' }
 }
@@ -21,4 +37,8 @@ processResources {
     filesMatching('META-INF/mods.toml') {
         expand 'mod_version': version
     }
+}
+
+jar {
+    from project(':common').sourceSets.main.output
 }

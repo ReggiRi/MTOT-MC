@@ -34,49 +34,59 @@ MTOT/
 │           └── actions/             # BuiltinActionsTest
 ├── fabric/                          # Fabric обёртка
 │   ├── build.gradle                 # Fabric Loom
-│   └── src/main/
-│       ├── java/com/mtot/fabric/
-│       │   ├── MTOTFabricClient.java    # ClientModInitializer
-│       │   └── FabricKeyManager.java    # GLFW polling
-│       └── resources/fabric.mod.json
+│   ├── src/main/
+│   │   ├── java/com/mtot/fabric/
+│   │   │   ├── MTOTFabricClient.java    # ClientModInitializer + BuiltinActions + F6
+│   │   │   ├── FabricKeyManager.java    # GLFW polling
+│   │   │   ├── MTOTModMenuIntegration.java  # ModMenu integration
+│   │   │   └── mixin/ChatScreenMixin.java   # Shift+Enter mixin
+│   │   └── resources/
+│   │       ├── fabric.mod.json
+│   │       ├── mtot.mixins.json
+│   │       └── assets/mtot/icon.png
+│   └── ...
 ├── neoforge/                        # NeoForge обёртка
-│   ├── build.gradle                 # NeoForge userdev
+│   ├── build.gradle                 # NeoForge userdev + jar из common
 │   └── src/main/
 │       ├── java/com/mtot/neoforge/
-│       │   ├── MTOTNeoForgeClient.java  # @Mod + EventBus
+│       │   ├── MTOTNeoForgeClient.java  # @Mod + BuiltinActions + F6
 │       │   └── NeoForgeKeyManager.java  # GLFW polling
-│       └── resources/META-INF/neoforge.mods.toml
+│       └── resources/
+│           ├── META-INF/neoforge.mods.toml
+│           └── mtot.png
 ├── forge/                           # Forge обёртка (1.20.1 LTS)
-│   ├── build.gradle                 # ForgeGradle
+│   ├── build.gradle                 # ForgeGradle + official mappings + jar из common
 │   └── src/main/
 │       ├── java/com/mtot/forge/
-│       │   ├── MTOTForgeClient.java     # @Mod + EventBus
+│       │   ├── MTOTForgeClient.java     # @Mod + BuiltinActions + F6
 │       │   └── ForgeKeyManager.java     # GLFW polling
-│       └── resources/META-INF/mods.toml
+│       └── resources/
+│           ├── META-INF/mods.toml
+│           └── mtot.png
 ├── build.gradle                     # Корневой билд
 ├── settings.gradle                  # Multi-module (common + fabric)
 ├── gradle.properties                # Версии зависимостей
 ├── gradlew / gradlew.bat           # Gradle wrapper 8.7
 ├── PROJECT_MAP.md                   # Этот файл
 ├── .directory.md                    # Документация корня
-├── .gitignore
-├── MTOT-doc.md                      # Техническая спецификация
-└── 2R-skill-2.0.md                  # Стандарт разработки
+├── API.md                           # Документация API для мододелов
+└── .gitignore
 ```
 
 ## Статистика
 
-- **Всего классов:** 14 (production) + 8 (test)
+- **Всего классов:** 17 (production) + 8 (test)
 - **Всего тестов:** 42, все зелёные
-- **Строк кода (common):** ~650 (production) + ~500 (test)
+- **Строк кода (common):** ~670 (production) + ~510 (test)
 
 ## Граф зависимостей
 
 ```
-IMTOTAPI ← MTOTAPI (статический доступ)
+IMTOTAPI (register, registerAction, bind, getBinding, findConflicts)
+    ← MTOTAPI (статический доступ)
     ↑
 MTOTManager (синглтон, implements IMTOTAPI)
-    ├── BindingRegistry  — действия + привязки
+    ├── BindingRegistry  — действия + привязки + findConflicts
     └── KeyStateTracker  — состояния клавиш + release detection
             ↑
 MTOTConfig (сериализация BindingRegistry ↔ JSON)
@@ -90,19 +100,16 @@ GUI
 Локализация
     └── assets/mtot/lang/{en_us,ru_ru}.json
 
-Платформы → MTOTManager.tick()
-    ├── Fabric   → ClientTickEvents.END_CLIENT_TICK
+Платформы → MTOTManager.tick() + BuiltinActions.init() + F6
+    ├── Fabric   → ClientTickEvents.END_CLIENT_TICK + mixin
     ├── NeoForge → ClientTickEvent.Post
     └── Forge    → ClientTickEvent.Post
 ```
 
 ## Индекс изменений
 
-- `common/api/` → проверить `common/core/`
-- `common/core/` → проверить `common/config/`, `actions/`, все платформы
-- `common/config/` → проверить `common/core/`
-- `common/actions/` → проверить `common/core/`
-- `fabric/` → проверить только Fabric
-- `neoforge/` → проверить только NeoForge
-- `forge/` → проверить только Forge
-- `build.gradle` / `settings.gradle` → проверить все модули
+- `common/api/IMTOTAPI.java` → содержит `findConflicts`
+- `common/core/MTOTManager.java` → делегирует `findConflicts` в `BindingRegistry`
+- `forge/` → BuiltinActions.init() + F6 settings key + official mappings + jar bundle
+- `neoforge/` → BuiltinActions.init() + F6 settings key + jar bundle
+- `settings.gradle` → common + fabric активны, forge/neoforge отключены до dev-окружения
